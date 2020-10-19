@@ -1,0 +1,171 @@
+---
+title: "Determinants of Life Satisfaction in Canada"
+author: "Jiaqi Wu and Shenghan Zhao"
+date: "Oct19, 2020"
+output:
+  word_document: default
+  pdf_document: default
+subtitle: Age, Income, and Self-Rated Mental Health
+---
+
+## Abstract
+
+Our study uses the 2017 General Social Survey (GSS) data from Statistics Canada to explore the relationship between life satisfaction and three potential determinants: age, family income, and subjective mental health. Using the dataset, we build a logistic regression model by regressing respondents’ feelings of life, an indicator of life satisfaction, on age, family income and self-rated mental health. It is found that our model is capable of classifying citizens’ life satisfaction based on the information about their age, family income and self-rated mental health at an accuracy rate of 86% and all three determinants are statistically significant. It is also worth noting that mental health has the strongest impact on life satisfaction among these three factors, which provides evidence that improving people’s mental health is helpful for improvement in life satisfaction level. 
+
+## Introduction
+
+Nowadays, life satisfaction is one of the popular research areas for both social scientists and economists. There have been a number of studies that examined the determinants of life satisfaction over the past decade, and ours is one of them. In this paper, we aim to examine how life satisfaction changes through life span, and how variations in family income and subjective mental health affect life satisfaction. This model could be useful for classifying individuals’ level of life satisfaction based on their age, family income level and mental health. The outcome shows that all these three factors have statistically significant association with life satisfaction. In particular, subjective mental health is more strongly associated than the other two selected factors. Individuals with poor self-rated mental health tend to have a particularly low level of life satisfaction. This finding may be beneficial for developing health policies to optimize mental health promotion for the purpose of enhancing life satisfaction in the general population. 
+
+In the following sections, we start with describing and commenting on the data sources that we rely on in this study. Before performing analysis, we categorize feelings of life into two levels: relatively satisfied and relatively dissatisfied. We then build a logistic regression model to regress this newly categorized feelings of life on age, family income and self-rated mental health to see how these three factors contribute to life satisfaction. After that, we present and interpret our main statistical results and findings, as well as their implications. At the end of the paper, we discuss the weaknesses of the whole study and sketch out the opportunities for further research.   
+
+
+## Data
+
+*Dataset*      
+Our analysis in this paper is based on the data collected from the 2017 GSS in Canada that is conducted from February 2nd to November 30th in 2017. The GSS is a cross-sectional survey administered by Statistics Canada. There are two components of the data. The first component is the contents related to living conditions and well-beings including feelings of life, general and mental health, and housing characteristics. The second component is the classification variables including age, sex, marital status, education, income, etc.     
+
+The information collected by the survey is adequate and comprehensive. There are 81 variables and 20,602 observations in total. This large base of attributes allows us to explore various issues and to perform different analyses.    
+
+However, there are some weaknesses in terms of the dataset. In general, the dataset is not clean and we have to clean up the data before using it. With regards to our study objective, the information about mental health is limited since the data on mental health status is self-rated by the respondents themselves. This could raise a response bias when the respondents are unwilling to provide honest responses. Indeed, the information about actual medical reports on mental illness will be more helpful and accurate to predict the model, which is not available in the dataset.    
+
+In our study, the variables we use are “feelings_life”, “age”, “income_family”, and “self_rated_mental_health”. The dependent variable “feelings_life” is an indicator of self-reported life satisfaction on a scale of discrete numbers from 0 to 10. A higher number represents higher satisfaction. The variable “age” is numerical, stating the actual age of the respondents. The variables “income_family” and “self_rated_mental_health” are categorical data that represents the family income level and subjective mental health of the respondents. We construct a new variable named “feeling” to categorize “feelings_life” into two levels. Respondents who rate their life from 0 to 5 are assigned a “0” under “feeling”, meaning that they are relatively dissatisfied with their life. In contrast, respondents who rate their life at 6 or above are assigned a “1”, which suggests that they are relatively satisfied with their life. There are two similar variables in the dataset, “income_respondent” and “income_family”, representing the income of the respondent and aggregate income of the respondent's family respectively. We assume that personal life satisfaction would be more based on family income instead of personal income. For example, in reality when people want to borrow loans, family income is an important risk measure considered by lenders when they underwrite loans. Therefore, a model that uses family income as one of the independent variables is considered more appropriate rather than using the respondent’s individual income. There is another variable called “self_rated_health”. We do not include this variable because we cannot indicate whether this general health measure includes mental health, which is thought to be a key determinant on life satisfaction. We assume that the question regarding self-reported health reflects physical rather than mental health status.     
+     
+*Questionnaire*     
+The content in the questionnaire is very detailed and comprehensive. The questions cover various aspects and consider many different alternatives. For example, in terms of marital status, questions are designed from current marriage up to the third marriage. Most importantly, the questionnaire not only focuses on the selected respondents, but also collects information about other household members of the respondents such as their parents, spouse, and children. It is relatively convenient and cost effective to collect information about a whole family by interviewing only one member, avoiding complex steps to distribute questionnaires to everyone in the family.    
+
+The greatest drawback is that the questionnaire is too long and requires a lot of time to complete. With more time spent on the survey, respondents will rush with far less attention, which affects the quality of the answers to the latter part of the survey. Also, the questions regarding different family members are similar. This increases survey fatigue as respondents have to read through and answer those similar questions several times. There is another problem that the respondents may not be very familiar with all family members. Therefore, it would be time-consuming for them to complete the questionnaire because they may need to ask their family members about their own information. All these factors would reduce the accuracy of the results.       
+     
+*Methodology*    
+The target population is all non-institutionalized persons who live in the ten provinces of Canada with age of 15 or older. The frame is households with a telephone. One on hand, the case with one or several telephone numbers associated with the same address is treated as one unit. On the other hand, when the link cannot be established between a telephone number and an address, a single telephone number is treated as a unit. Data is collected using a stratified sampling method. The stratification is done at the 10 provinces and many of the census metropolitan areas in Canada, dividing into 27 strata in total. Within each stratum, there are two stages of random sampling. At the first stage, a group of telephone numbers representing individual households is randomly selected within each stratum. At the second stage, only one single eligible member is randomly drawn within each identified household to complete the questionnaire with no proxy responses. These selected individuals form the sample.      
+
+Stratified sampling fits the background of the survey well because the sample is best representative of the target population by dividing it into strata, ensuring that each stratum in the population receives proper representation within the sample. Stratified sampling provides a better coverage of the population, compared to simple random sampling which does not guarantee any particular subgroup of individuals are selected. In GSS, data is collected directly from respondents using the computer-assisted telephone interviewing method. Because selected individuals are voluntary to do the survey, here comes the problem that the non-response rates of the questions relating to income are high. To deal with it, an additional adjustment is made. That is, the income information has been linked to the personal tax records of the respondents. Respondent’s information such as postal code, date of birth and insurance number are collected for the linkage. This allows to get the income information without having to ask questions, reducing respondent’s burden and non-response bias, as well as improving data accuracy.     
+
+Nevertheless, the sampling method and data collection process have some drawbacks. Even though the sampling method is good, the data may have sampling bias because it is collected from a sample of individuals. The estimates may differ from sample to sample, and the results may vary from the facts of the complete census. Furthermore, the data is potentially subject to three types of non-sampling bias. The first one is coverage error that occurs when the target population differs to the frame from which the sample is selected. According to the sampling method within each stratum, only households with telephones are covered by the frame, resulting in the problem of undercoverage. Households without telephones, which are also a part of the target population, are excluded from the frame and sample. When the excluded population is different from the rest of the target population, the results will be biased. In this case, it is very likely that the attributes within these two groups are different. For example, households without telephones typically have a relatively low level of income compared to those with telephones. Therefore, the results are subject to coverage errors. Another non-sampling bias is the non-response bias. Even though some adjustments are made in order to get the income information, non-response bias may still exist due to the nature of survey sampling that the sampled individuals are completely voluntary to do the survey. Lastly, response bias could exist, again, due to the nature of survey sampling. Respondents may be unwilling to provide accurate and honest answers. One example is the aspect of self-rated mental health. Respondents with poor mental  health may provide a more moderate answer that is considered more socially acceptable rather than provide a sincere response. All these potential biases could affect the accuracy of the study outcomes.     
+  
+
+
+## Model
+
+We continue our analysis by building a logistic regression model using Rstudio to predict the level of life satisfaction based on age, family income and subjective mental health. Logistic regression is a statistical model used to model a binary dependent variable with two potential outcomes which is represented by an indicator variable where the two values are labeled “0” and “1”.    
+
+We have made some adjustments on the data. Firstly, under the variable “self_rated_mental_health”, there are 17 missing observations and  47 observations that are “Don’t know” out of 20,602 observations in total. We believe that the size of “NA” and “Don’t know” are too small compared to the other categories of observations so we remove these observations to clean up the dataset. Secondly, as mentioned in the “Data” section, we construct a new variable “feeling” as our dependent variable which categorizes “feelings_life” into two levels. The reason for doing this is that the dependent variable has to be binary in logistic regression. We then regress “feeling” on “age”, “income_family” and “self_rated_mental_health”.       
+
+By research, we found that in 2017, the population size of Canadians who are 15 years or older is 30,633,177. We ended up building the model based on a sample size of 20,273 and population of 30,633,177. The model turns out to be the following formula.      
+ 
+log(p/1-p) = β0 + β1*age + β2*income_family$125,000 and more + β3*income_family$25,000 to 49,999 + β4*income_family$50,000 to 74,999 + β5*income_family$75,000 to 99,999 + β6*income_familyLess than $25,000 + β7*self_rated_mental_healthFair + β8*self_rated_mental_healthGood + β9*self_rated_mental_healthPoor + β10*self_rated_mental_healthVery good      
+     
+Where p represents the probability that the classification of life satisfaction is “relatively satisfied”. The value of the intercept β0 represents the log odds that the respondent is relatively satisfied in life, with an age of 0, a family income within the range between $100,000 and $124,999, as well as an excellent subjective mental health. β1 represents the change in log odds of being relatively satisfied in life associated with one year increase in age when controlling all other factors constant. Family income is categorized into six groups: Below $25,000; From $25,000 to 49,999; From $50,000 to $74,999; From $75,000 to $99,999; From $100,000 to $124,999; Above $125,000. β2 to β6 are coefficients of the dummy variables for family income, representing the change in log odds of being relatively satisfied in life compared to the base group (i.e., the group with family income between $100,000 and $124,999). Similarly, self-rated mental health is categorized into five groups: Poor; Fair; Good; Very good; Excellent. β7 to β10 are coefficients of the dummy variables for self-rated mental health, representing the change in log odds of being relatively satisfied in life compared to the base group (i.e., the group with an excellent rating on mental health).    
+
+The Akaike information criterion (AIC) evaluates how well a model fits the data it is generated from. It is used to determine which model has better performance. Usually, a smaller AIC means that the model would have better performance. During setting up the model, we have tried removing any of the three variables, the resulting AIC level turns to increase. Therefore, our model based on these three variables is considered better off compared to only having any one or two of them.     
+
+To evaluate the predictive accuracy of our model, we will assess the value of AUC, which stands for the Area under the ROC Curve. The ROC curve shows the diagnostic ability of binary classifiers. AUC is a metric that measures the predictive performance of a logistic regression model. It tells how well the model is capable of distinguishing between different classes. A higher AUC suggests that the model is better at predicting the classification of the dependent variable.    
+
+## Results
+```{r setup, include=FALSE}
+library(survey)
+library(tidyverse)
+library(pROC)
+knitr::opts_chunk$set(echo = FALSE)
+##model##
+gss <- read.csv("gss.csv")
+gssnew <- select(gss, age, feelings_life, income_family,self_rated_mental_health)
+gssfinal <- na.omit(gssnew)
+gssfinal <- gssfinal %>% mutate(feeling = ifelse(feelings_life < 5,0,1)) 
+gssfinal$income_family <- as.factor(gssfinal$income_family)
+gssfinal$feelings_life <- as.factor(gssfinal$feelings_life)
+gssfinal$self_rated_mental_health <- as.factor(gssfinal$self_rated_mental_health)
+gssfinal <- filter(gssfinal, self_rated_mental_health != "NA")
+gssfinal <- filter(gssfinal, self_rated_mental_health != "Don't know")
+N=30633177
+n=length(gssfinal$feeling)
+fpc.srs = rep(N, n)
+srs <- svydesign(id=~1, data=gssfinal, fpc=fpc.srs)
+logit <- svyglm(feeling ~ age+income_family+self_rated_mental_health, srs, family="binomial")
+summary(logit) 
+##AIC##
+logit <- svyglm(feeling ~ age+income_family+self_rated_mental_health, srs, family="binomial")
+step(logit, trace = 1)
+#ROC curve#
+predict1 <- predict(logit,newdata=gssfinal,type="response")
+roc_logit <- roc(gssfinal$feeling~predict1)
+TPR <- roc_logit$sensitivities
+FPR <- 1-roc_logit$specificities
+plot(FPR,TPR,xlim=c(0,1),ylim=c(0,1),type='l',lty=1,lwd=2,col='red')
+abline(a=0,b=1,lty=2,col='blue')
+text(0.7,0.4,label=paste("AUC=",round(auc(roc_logit),2)))
+summary(logit) 
+```
+
+```{r echo=FALSE}
+summary(logit)
+```
+
+Here is the regression result. The estimate of intercept is 5.29, meaning that if the respondent is at age 0, with family income from $100,000 to $125,000 and excellent mental health, his/her log odds of being relatively satisfied in life is approximately 5.29. The estimated coefficient on age is 0.004086, which suggests that for any person with the same family income and mental health, the log odds of being relatively satisfied in life increases by 0.004086 with one year increase in age.     
+
+In terms of family income, the coefficient on the group with family income from $75,000 to $99,999 is -0.53, meaning that holding age and mental health constant, the log odds of being relatively satisfied in life within this group of individuals decreases by 0.53, compared to the base group. Or say, the probability of being relatively satisfied in life reduces by exp(0.53). For the group with family income from $50,000 to $74,999, that probability decreases by even more, which is by exp(0.73). Similarly, there is a clear trend that the group of individuals with a lower level of family income has a lower probability of being relatively satisfied in life. However, there is an interesting finding that when income level increases to $125,000 and above compared to the base group, that probability decreases as well instead of increasing.        
+
+With respect to self-rated mental health, the coefficient on the group with fair rating is -2.83, which suggests that after considering age and family income, the odds of being relatively satisfied in life reduces by exp(2.83), compared to the base group. Similarly, that odds decreases by exp(4.47) for the group of individuals with poor mental health. The pattern is clear that as mental health status gets poorer, the likelihood of individuals to be relatively satisfied with their life is lower.       
+
+To test whether these relationships are statistically significant, we examine the p-values from the regression result. P-value tests the null hypothesis that the coefficient is zero, meaning that there is no correlation between the independent variable and the dependent variable. A low p-value indicates that we can reject the null hypothesis. To be more specific, if the p-value is low enough and is less than the significant level, the data provides sufficient evidence that the independent variable is associated with the dependent variable. In other words, the independent variable is statistically significant and probably a meaningful addition to the model. In this case, the p-value of age is 0.07582 which is less than 0.1, so we can conclude that age is statistically significant at the 10% significance level. Likewise, we find that both family income and self-rated mental health are statistically significant. In particular, self-rated mental health is most statistically significant as the p-values are extremely low.      
+
+
+```{r echo = FALSE}
+predict1 <- predict(logit,newdata=gssfinal,type="response")
+roc_logit <- roc(gssfinal$feeling~predict1)
+TPR <- roc_logit$sensitivities
+FPR <- 1-roc_logit$specificities
+plot(FPR,TPR,xlim=c(0,1),ylim=c(0,1),type='l',lty=1,lwd=2,col='red')
+abline(a=0,b=1,lty=2,col='blue')
+text(0.7,0.4,label=paste("AUC=",round(auc(roc_logit),2)))
+```
+
+This figure shows the ROC curve of our model. As we can see, the AUC is 0.86, which indicates there is a 86% chance that our model will be able to correctly distinguish whether an individual is relatively satisfied or dissatisfied with life. Based on this criteria, the capacity of our model to distinguish the two levels of life satisfaction is good.    
+
+## Discussion
+
+Overall, our logistic regression model built in this study works well to predict the level of life satisfaction based on three determinants: age, family income, and self-rated mental health.The model is capable of distinguishing life satisfaction with an accuracy rate of 86%, between “relatively satisfied” and “relatively unsatisfied”.      
+
+This study finds that both age, income and self-rated mental health are statistically significantly associated with life satisfaction. Firstly, as age increases, the probability of individuals being relatively satisfied with their life increases. However, this impact is small compared to the other two determinants. Secondly, the group of individuals with family income of $100,000 to $124,999 has the highest probability to have a relatively high rating for life satisfaction. For individuals with family income below this level, as income level decreases, the probability for them to have a high rating on life satisfaction is more likely to decline. There is an interesting finding that for individuals who have income levels exceeding $125,000, their life satisfaction tends to decrease. Thirdly, self-rated mental health contributes highly to life satisfaction, which is more strongly associated than the previous two factors. Individuals with very good mental health have the highest probability of being relatively satisfied. As the person’s mental health gets poorer, the probability of being  relatively satisfied becomes much lower. In conclusion, the combination of these three factors helps to classify the citizens’ life satisfaction in Canada. It is also worth noting that mental health is the most strongly associated factor, which provides insight to the importance of enhancing citizens’ life satisfaction by strengthening their mental health.     
+
+Although it seems that the model fits our study objective well, there are still some problems and drawbacks needed to be considered as what we have mentioned in the data section above. Therefore, at the end of the study, it is crucial to think about the potential areas for improvements and the opportunities for future research.       
+
+
+# Weaknesses
+
+First of all, the sampling method leads to an undercoverage error as households without telephones are excluded from the target population, which would potentially raise biases on the study results. To improve accuracy, this group of population should also be sampled. When telephone surveys are not feasible for those individuals, the GSS program should consider conducting offline paper-based surveys on them. By including households without telephones in the frame, the sampling results will be more representative of the target population.       
+
+Besides, in terms of the model that we build, the basic logistic regression could potentially lower the precision of the results because we have recategorized the dependent variable from 11 levels into 2 levels. In addition, to examine the relationship between life satisfaction and mental health, the data of self-rate mental health is not strong enough for our exploration. As mentioned, the survey-based data is subject to response bias, especially for the data of mental health, which is subjectively judged by the respondents themselves. Their responses could be different from their actual situations. This also raises biases and lowers the accuracy of our results.       
+
+
+# Next Steps
+
+In this study, we categorize the indicator of life satisfaction into two levels, while it originally has 11 categories scaling from 0 to 10. Indeed, to treat with the dependent variable that is categorized into more than two discrete levels, multinomial logistic regression will be a better statistical model. It works to predict the probabilities of different possible outcomes of the categorical dependent variable, given a set of independent variables. Therefore, we will further perform multinomial logistic regression on the same data, and the output is supposed to be more accurate and precise. We will be able to interpret the probability of multiple levels of life satisfaction in details instead of only interpreting the probability of the satisfaction level of 0 (i.e., relatively dissatisfied) versus 1 (i.e., relatively satisfied).     
+
+Moreover, our study outlines the importance of subjective mental health on life satisfaction. To deepen our understanding of the relationship between life satisfaction and mental health, further research will focus on the respondents’ actual medical report on mental illness, which is an objective fact instead of a subjective judgement. By collecting data on mental illness to complement the data of subjective mental health, this gives further insights to enhance mental health promotion, as well as improve prevention and treatment of mental illness in order to optimize life satisfaction in the general population.           
+
+
+
+## References
+
+
+Computing in the Humanities and Social Sciences. (n.d.). Retrieved October 19, 2020, from http://www.chass.utoronto.ca/   
+  
+Conduct and Interpret a Multinomial Logistic Regression. (n.d.). Retrieved October 19, 2020, from https://www.statisticssolutions.com/mlr/    
+  
+Detailed information for 2017 (Cycle 31). (n.d.). Retrieved October 19, 2020, from https://www23.statcan.gc.ca/imdb/p2SV.pl?Function=getSurvey    
+  
+Government of Canada, Statistics Canada. (2020, September 29). Population estimates on July 1st, by age and sex. Retrieved October 19, 2020, from https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1710000501    
+  
+Life Satisfaction Theory and 4 Contributing Factors (Incl. SWLS Scale). (2020, September 01). Retrieved October 19, 2020, from https://positivepsychology.com/life-satisfaction/    
+  
+M. Prince, V., J. Helliwell, R., E. Diener, R., E. Diener, M., P. Dolan, T., TW. Strine, K., . . . F. Ahmad, A. (1970, January 01). The fundamental association between mental health and life satisfaction: Results from successive waves of a Canadian national survey. Retrieved October 19, 2020, from https://bmcpublichealth.biomedcentral.com/articles/10.1186/s12889-018-5235-x    
+ 
+Narkhede, S. (2019, May 26). Understanding AUC - ROC Curve. Retrieved October 19, 2020, from https://towardsdatascience.com/understanding-auc-roc-curve-68b2303cc9c5    
+    
+Ortiz-Ospina, E., & Roser, M. (2013, May 14). Happiness and Life Satisfaction. Retrieved October 19, 2020, from https://ourworldindata.org/happiness-and-life-satisfaction   
+RStudio Team. (2020). RStudio: Integrated Development Environment for R. Boston, MA. Retrieved from http://www.rstudio.com/   
+   
+T. Lumley (2020) "survey: analysis of complex survey samples". R package version 4.0.   
+Wickham et al., (2019). Welcome to the tidyverse. Journal of Open Source Software, 4(43), 1686, https://doi.org/10.21105/joss.01686   
+    
+Xavier Robin, Natacha Turck, Alexandre Hainard, Natalia Tiberti, Frédérique Lisacek, Jean-Charles Sanchez and Markus Müller (2011). pROC: an open-source package for R and S+ to analyze and compare ROC curves. BMC Bioinformatics, 12, p. 77.  DOI: 10.1186/1471-2105-12-77 <http://www.biomedcentral.com/1471-2105/12/77/>    
